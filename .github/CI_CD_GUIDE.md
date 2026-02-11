@@ -115,7 +115,7 @@ All pull requests use a standard template (`.github/pull_request_template.md`) t
 ### Coverage Reports
 
 Coverage reports are uploaded to Codecov:
-- View at: https://codecov.io/gh/iainswarts/UnrealityTV
+- View at: https://codecov.io/gh/IainDoesStuff/UnrealityTV
 - Badge available for README
 - Historical coverage tracking
 - Per-file coverage breakdown

@@ -98,7 +98,7 @@ git push -u origin feature/add-audio-extraction
 ### 5️⃣ Create Pull Request
 
 **Option A: Via GitHub Web UI (Recommended)**
-1. Go to repo: https://github.com/iainswarts/UnrealityTV
+1. Go to repo: https://github.com/IainDoesStuff/UnrealityTV
 2. You'll see a banner: "feature/add-audio-extraction had recent pushes"
 3. Click "Compare & pull request"
 4. Fill in PR template
