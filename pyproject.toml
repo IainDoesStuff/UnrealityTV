@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "unrealitytv"
+version = "0.1.0"
+description = "Automatically detect and skip repetitive/unwanted segments in reality TV shows during Plex playback"
+authors = [{name = "iainswarts", email = "iainswarts@example.com"}]
+license = "MIT"
+dependencies = [
+    "click",
+    "pydantic",
+    "pydantic-settings",
+]
+dev-dependencies = [
+    "pytest",
+    "ruff",
+]
+keywords = ["plex", "scene detection", "skip segments"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
