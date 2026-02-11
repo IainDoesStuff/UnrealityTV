@@ -8,14 +8,12 @@ version = "0.1.0"
 description = "Automatically detect and skip repetitive/unwanted segments in reality TV shows during Plex playback"
 authors = [{name = "iainswarts", email = "iainswarts@example.com"}]
 license = "MIT"
+readme = "README.md"
+requires-python = ">=3.10"
 dependencies = [
     "click",
     "pydantic",
     "pydantic-settings",
-]
-dev-dependencies = [
-    "pytest",
-    "ruff",
 ]
 keywords = ["plex", "scene detection", "skip segments"]
 classifiers = [
@@ -23,3 +21,29 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+]
+
+[project.scripts]
+unrealitytv = "unrealitytv.cli:cli"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+exclude = [
+    ".git",
+    "__pycache__",
+    "dist",
+    "build",
+    "*.egg-info",
+    ".venv",
+    "venv",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501"]  # Line too long - handled by formatter

@@ -1,2 +1,3 @@
-# src/unrealitytv/__init__.py
-# Empty file for package initialization
+"""UnrealityTV - Automatically detect and skip repetitive segments in reality TV."""
+
+__version__ = "0.1.0"
