@@ -73,14 +73,14 @@ class TestAnalysisPipelineSuccessfulAnalysis:
     ) -> None:
         """Test successful execution of all pipeline stages."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             # Setup mocks
             mock_whisper = MagicMock()
@@ -106,14 +106,14 @@ class TestAnalysisPipelineSuccessfulAnalysis:
     ) -> None:
         """Test pipeline with no transcript segments."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = []
@@ -133,14 +133,14 @@ class TestAnalysisPipelineSuccessfulAnalysis:
     ) -> None:
         """Test pipeline when transcript has no recap/preview keywords."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -171,14 +171,14 @@ class TestAnalysisPipelineSuccessfulAnalysis:
         ]
 
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=180000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -203,14 +203,14 @@ class TestAnalysisPipelineConfiguration:
     ) -> None:
         """Test that gpu_enabled parameter is passed to WhisperTranscriber."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -234,14 +234,14 @@ class TestAnalysisPipelineConfiguration:
         custom_recap = ["flashback", "in the past"]
 
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -267,14 +267,14 @@ class TestAnalysisPipelineConfiguration:
         custom_preview = ["teaser", "upcoming"]
 
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -312,7 +312,7 @@ class TestAnalysisPipelineErrorHandling:
     def test_audio_extraction_error(self, valid_episode: Episode) -> None:
         """Test error propagation from audio extraction."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio",
+            "unrealitytv.analysis.pipeline.extract_audio",
             side_effect=Exception("FFmpeg failed"),
         ), pytest.raises(AnalysisPipelineError, match="extraction"):
             pipeline = AnalysisPipeline()
@@ -321,12 +321,12 @@ class TestAnalysisPipelineErrorHandling:
     def test_transcription_error(self, valid_episode: Episode) -> None:
         """Test error propagation from Whisper transcription."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, pytest.raises(
             AnalysisPipelineError, match="Transcription failed"
         ):
@@ -342,14 +342,14 @@ class TestAnalysisPipelineErrorHandling:
     ) -> None:
         """Test error propagation from pattern matching."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class, pytest.raises(
             AnalysisPipelineError, match="Segment detection failed"
         ):
@@ -369,7 +369,7 @@ class TestAnalysisPipelineErrorHandling:
     def test_unexpected_error_handling(self, valid_episode: Episode) -> None:
         """Test handling of unexpected errors."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio",
+            "unrealitytv.analysis.pipeline.extract_audio",
             side_effect=RuntimeError("Unexpected error"),
         ), pytest.raises(
             AnalysisPipelineError, match="Unexpected error"
@@ -389,14 +389,14 @@ class TestAnalysisPipelineResourceManagement:
         detected_duration = 75000
 
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=detected_duration,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -417,14 +417,14 @@ class TestAnalysisPipelineResourceManagement:
     ) -> None:
         """Test that close() releases the WhisperTranscriber."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -444,7 +444,7 @@ class TestAnalysisPipelineResourceManagement:
     def test_cleanup_on_error(self, valid_episode: Episode) -> None:
         """Test that resources are cleaned up even on error."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio",
+            "unrealitytv.analysis.pipeline.extract_audio",
             side_effect=Exception("Error"),
         ), pytest.raises(AnalysisPipelineError):
             pipeline = AnalysisPipeline()
@@ -459,14 +459,14 @@ class TestAnalysisPipelineResourceManagement:
     ) -> None:
         """Test temporary file cleanup when flag is True."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -487,14 +487,14 @@ class TestAnalysisPipelineResourceManagement:
     ) -> None:
         """Test that temporary files are kept when flag is False."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -519,14 +519,14 @@ class TestAnalysisPipelineLazyLoading:
     ) -> None:
         """Test that WhisperTranscriber is lazily loaded on first analyze."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -547,14 +547,14 @@ class TestAnalysisPipelineLazyLoading:
     ) -> None:
         """Test that KeywordMatcher is lazily loaded on first analyze."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -585,14 +585,14 @@ class TestAnalysisPipelineLazyLoading:
         episode2.file_path.write_bytes(b"fake video")
 
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -624,14 +624,14 @@ class TestAnalysisPipelineResultMetadata:
     ) -> None:
         """Test that result contains the input episode."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -652,14 +652,14 @@ class TestAnalysisPipelineResultMetadata:
     ) -> None:
         """Test that result contains all detected segments."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript
@@ -681,14 +681,14 @@ class TestAnalysisPipelineResultMetadata:
     ) -> None:
         """Test that result is an AnalysisResult instance."""
         with patch(
-            "src.unrealitytv.analysis.pipeline.extract_audio"
+            "unrealitytv.analysis.pipeline.extract_audio"
         ), patch(
-            "src.unrealitytv.analysis.pipeline.get_duration_ms",
+            "unrealitytv.analysis.pipeline.get_duration_ms",
             return_value=60000,
         ), patch(
-            "src.unrealitytv.analysis.pipeline.WhisperTranscriber"
+            "unrealitytv.analysis.pipeline.WhisperTranscriber"
         ) as mock_whisper_class, patch(
-            "src.unrealitytv.analysis.pipeline.KeywordMatcher"
+            "unrealitytv.analysis.pipeline.KeywordMatcher"
         ) as mock_matcher_class:
             mock_whisper = MagicMock()
             mock_whisper.transcribe.return_value = sample_transcript

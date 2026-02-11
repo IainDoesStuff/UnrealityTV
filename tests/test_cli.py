@@ -66,10 +66,10 @@ class TestAnalyzeCommand:
     ) -> None:
         """Test successful analysis with segments found."""
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.return_value = sample_analysis_result
@@ -91,10 +91,10 @@ class TestAnalyzeCommand:
         result_no_segments = AnalysisResult(episode=sample_episode, segments=[])
 
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.return_value = result_no_segments
@@ -114,10 +114,10 @@ class TestAnalyzeCommand:
         output_file = tmp_path / "analysis.json"
 
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.return_value = sample_analysis_result
@@ -145,10 +145,10 @@ class TestAnalyzeCommand:
     ) -> None:
         """Test error when analysis pipeline fails."""
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.side_effect = AnalysisPipelineError("Pipeline error")
@@ -165,10 +165,10 @@ class TestAnalyzeCommand:
     ) -> None:
         """Test GPU flag is passed to pipeline."""
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.return_value = sample_analysis_result
@@ -187,10 +187,10 @@ class TestAnalyzeCommand:
     ) -> None:
         """Test GPU is disabled by default."""
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.return_value = sample_analysis_result
@@ -207,10 +207,10 @@ class TestAnalyzeCommand:
     ) -> None:
         """Test that episode is parsed from filename."""
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ) as mock_parse, patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.return_value = sample_analysis_result
@@ -230,10 +230,10 @@ class TestAnalyzeCommand:
     ) -> None:
         """Test that episode information is displayed."""
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.return_value = sample_analysis_result
@@ -253,10 +253,10 @@ class TestAnalyzeCommand:
     ) -> None:
         """Test that segment details are displayed correctly."""
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.return_value = sample_analysis_result
@@ -276,10 +276,10 @@ class TestAnalyzeCommand:
     ) -> None:
         """Test that unexpected exceptions are caught and displayed."""
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.side_effect = RuntimeError("Unexpected error")
@@ -296,10 +296,10 @@ class TestAnalyzeCommand:
     ) -> None:
         """Test that pipeline is closed after successful analysis."""
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.return_value = sample_analysis_result
@@ -315,10 +315,10 @@ class TestAnalyzeCommand:
     ) -> None:
         """Test that pipeline is closed even on error."""
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=sample_episode,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.side_effect = AnalysisPipelineError("Error")
@@ -350,10 +350,10 @@ class TestAnalyzeCommand:
         )
 
         with patch(
-            "src.unrealitytv.cli.parse_episode",
+            "unrealitytv.cli.parse_episode",
             return_value=episode_no_metadata,
         ), patch(
-            "src.unrealitytv.cli.AnalysisPipeline"
+            "unrealitytv.cli.AnalysisPipeline"
         ) as mock_pipeline_class:
             mock_pipeline = MagicMock()
             mock_pipeline.analyze.return_value = result_no_metadata
