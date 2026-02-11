@@ -13,7 +13,7 @@ Thank you for your interest in contributing to UnrealityTV! This document provid
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/iainswarts/UnrealityTV.git
+   git clone https://github.com/IainDoesStuff/UnrealityTV.git
    cd UnrealityTV
    ```
 

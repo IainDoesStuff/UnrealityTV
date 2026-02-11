@@ -21,7 +21,7 @@ Automated developer environment setup script.
 **One-time setup from scratch:**
 ```bash
 # Clone repo
-git clone https://github.com/iainswarts/UnrealityTV.git
+git clone https://github.com/IainDoesStuff/UnrealityTV.git
 cd UnrealityTV
 
 # Run setup
@@ -83,7 +83,7 @@ git commit -m "My changes"
 
 ### First Time Setup
 ```bash
-git clone https://github.com/iainswarts/UnrealityTV.git
+git clone https://github.com/IainDoesStuff/UnrealityTV.git
 cd UnrealityTV
 ./scripts/setup-dev.sh
 source venv/bin/activate

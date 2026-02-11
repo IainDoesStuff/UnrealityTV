@@ -33,7 +33,7 @@ This document summarizes everything that's been set up to ensure all code change
 
 ### Step 1: Enable Branch Protection on GitHub
 
-**Go to:** https://github.com/iainswarts/UnrealityTV/settings/branches
+**Go to:** https://github.com/IainDoesStuff/UnrealityTV/settings/branches
 
 1. Click "Add rule"
 2. Pattern: `main`

@@ -16,7 +16,7 @@ Branch protection ensures:
 ### Option 1: Via GitHub Web UI (Easiest)
 
 1. **Go to repository settings**
-   - Navigate to: https://github.com/iainswarts/UnrealityTV/settings/branches
+   - Navigate to: https://github.com/IainDoesStuff/UnrealityTV/settings/branches
 
 2. **Add branch protection rule for `main`**
    - Click "Add rule"
@@ -62,7 +62,7 @@ If you have `gh` CLI installed:
 gh auth login
 
 # Set branch protection
-gh api repos/iainswarts/UnrealityTV/branches/main/protection \
+gh api repos/IainDoesStuff/UnrealityTV/branches/main/protection \
   -X PUT \
   -f required_pull_request_reviews='{"required_approving_review_count":1,"dismiss_stale_reviews":true}' \
   -f required_status_checks='{"strict":true,"contexts":["test-and-lint (3.10)","test-and-lint (3.11)","test-and-lint (3.12)","package-check"]}' \
@@ -272,7 +272,7 @@ You can enable auto-merge to automatically merge PRs once all requirements are m
 Add to `README.md`:
 
 ```markdown
-[![CI Status](https://github.com/iainswarts/UnrealityTV/actions/workflows/ci.yml/badge.svg)](https://github.com/iainswarts/UnrealityTV/actions/workflows/ci.yml)
+[![CI Status](https://github.com/IainDoesStuff/UnrealityTV/actions/workflows/ci.yml/badge.svg)](https://github.com/IainDoesStuff/UnrealityTV/actions/workflows/ci.yml)
 ```
 
 ## Troubleshooting
