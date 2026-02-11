@@ -43,7 +43,7 @@ jobs:
 
       - name: Run tests with pytest
         run: |
-          pytest tests/ -v --tb=short
+          python -m pytest tests/ -v --tb=long -s
 
       - name: Run tests with coverage
         run: |
