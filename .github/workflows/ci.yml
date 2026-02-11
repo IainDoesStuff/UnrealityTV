@@ -1,0 +1,109 @@
+name: CI - Tests & Linting
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Lint with Ruff
+        run: |
+          ruff check src/ tests/
+          ruff format --check src/ tests/
+
+      - name: Run tests with pytest
+        run: |
+          pytest tests/ -v --tb=short --strict-markers
+
+      - name: Run tests with coverage
+        run: |
+          pip install pytest-cov
+          pytest tests/ --cov=src/unrealitytv --cov-report=xml --cov-report=term-missing
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  package-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install and verify package installation
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+          unrealitytv --version
+          pip show unrealitytv
+
+  security-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Run bandit security check
+        run: |
+          pip install bandit
+          bandit -r src/unrealitytv -f json -o bandit-report.json || true
+          cat bandit-report.json || true
+
+  summary:
+    needs: [test-and-lint, package-check, security-check]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Check workflow status
+        run: |
+          if [ "${{ needs.test-and-lint.result }}" == "failure" ] || \
+             [ "${{ needs.package-check.result }}" == "failure" ]; then
+            echo "❌ CI failed - check above for details"
+            exit 1
+          fi
+          echo "✅ All CI checks passed!"
