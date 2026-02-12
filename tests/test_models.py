@@ -8,6 +8,7 @@ from pydantic import ValidationError
 from unrealitytv.models import (
     AnalysisResult,
     Episode,
+    PlexMetadata,
     SceneBoundary,
     SkipSegment,
 )
@@ -186,3 +187,70 @@ class TestSceneBoundary:
         assert boundary.start_ms == 1000
         assert boundary.end_ms == 5000
         assert boundary.scene_index == 0
+
+
+class TestPlexMetadata:
+    """Test PlexMetadata model."""
+
+    def test_plex_metadata_creation(self):
+        """Test PlexMetadata instantiation."""
+        metadata = PlexMetadata(
+            plex_item_id="12345",
+            plex_library_key="1",
+            plex_section_key="section_1",
+        )
+        assert metadata.plex_item_id == "12345"
+        assert metadata.plex_library_key == "1"
+        assert metadata.plex_section_key == "section_1"
+
+    def test_plex_metadata_serialization(self):
+        """Test PlexMetadata serialization."""
+        metadata = PlexMetadata(
+            plex_item_id="12345",
+            plex_library_key="1",
+            plex_section_key="section_1",
+        )
+        data = metadata.model_dump()
+        assert data["plex_item_id"] == "12345"
+        assert data["plex_library_key"] == "1"
+
+
+class TestEpisodeWithPlexMetadata:
+    """Test Episode model with plex_metadata field."""
+
+    def test_episode_with_plex_metadata(self):
+        """Test Episode with plex_metadata field."""
+        metadata = PlexMetadata(
+            plex_item_id="12345",
+            plex_library_key="1",
+            plex_section_key="section_1",
+        )
+        ep = Episode(
+            file_path=Path("/video/show.mkv"),
+            show_name="Test Show",
+            season=1,
+            episode=5,
+            duration_ms=3600000,
+            plex_metadata=metadata,
+        )
+        assert ep.plex_metadata is not None
+        assert ep.plex_metadata.plex_item_id == "12345"
+
+    def test_episode_without_plex_metadata(self):
+        """Test Episode without plex_metadata (backward compatibility)."""
+        ep = Episode(
+            file_path=Path("/video/show.mkv"),
+            show_name="Test Show",
+            season=1,
+            episode=5,
+        )
+        assert ep.plex_metadata is None
+
+    def test_episode_with_none_plex_metadata(self):
+        """Test Episode with explicit None plex_metadata."""
+        ep = Episode(
+            file_path=Path("/video/show.mkv"),
+            show_name="Test Show",
+            plex_metadata=None,
+        )
+        assert ep.plex_metadata is None
