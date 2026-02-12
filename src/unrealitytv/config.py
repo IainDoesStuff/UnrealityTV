@@ -72,6 +72,40 @@ class Settings(BaseSettings):
         description="Maximum number of worker threads for parallel processing"
     )
 
+    # Phase 7: Additional detection methods (silence and credits)
+    silence_detection_enabled: bool = Field(
+        default=False,
+        description="Enable silence detection in videos"
+    )
+    silence_threshold_db: float = Field(
+        default=-60.0,
+        description="Decibel threshold for silence detection"
+    )
+    silence_min_duration_ms: int = Field(
+        default=500,
+        ge=0,
+        description="Minimum silence duration in milliseconds"
+    )
+    credits_detection_enabled: bool = Field(
+        default=False,
+        description="Enable credits detection in videos"
+    )
+    credits_threshold: float = Field(
+        default=0.7,
+        ge=0.0,
+        le=1.0,
+        description="Confidence threshold for credits detection (0-1)"
+    )
+    credits_min_duration_ms: int = Field(
+        default=5000,
+        ge=0,
+        description="Minimum credits sequence duration in milliseconds"
+    )
+    allow_combined_detection: bool = Field(
+        default=True,
+        description="Allow combining multiple detection methods in results"
+    )
+
     model_config = {
         "env_file": ".env",
         "env_file_encoding": "utf-8",
@@ -82,7 +116,15 @@ class Settings(BaseSettings):
     @classmethod
     def validate_detection_method(cls, v: str) -> str:
         """Validate that detection_method is one of the allowed values."""
-        allowed_methods = ["scene_detect", "transnetv2", "hybrid", "auto"]
+        allowed_methods = [
+            "scene_detect",
+            "transnetv2",
+            "hybrid",
+            "silence",
+            "credits",
+            "hybrid_extended",
+            "auto",
+        ]
         if v not in allowed_methods:
             msg = f"detection_method must be one of {allowed_methods}, got '{v}'"
             raise ValueError(msg)

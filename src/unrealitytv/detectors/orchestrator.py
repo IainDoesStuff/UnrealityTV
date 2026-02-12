@@ -24,6 +24,9 @@ class DetectionOrchestrator:
                 - "scene_detect": PySceneDetect (CPU, always available)
                 - "transnetv2": TransNetV2 (GPU, fallback to CPU if unavailable)
                 - "hybrid": Run both methods and merge results
+                - "silence": Silence detection using audio analysis
+                - "credits": Credits detection using frame analysis
+                - "hybrid_extended": Run all available methods and merge results
                 - "auto": Choose based on hardware availability (default)
         """
         self.method = method
@@ -48,6 +51,12 @@ class DetectionOrchestrator:
             return self._detect_with_transnetv2(video_path, **kwargs)
         elif self.method == "hybrid":
             return self._detect_with_hybrid(video_path, **kwargs)
+        elif self.method == "silence":
+            return self._detect_with_silence(video_path, **kwargs)
+        elif self.method == "credits":
+            return self._detect_with_credits(video_path, **kwargs)
+        elif self.method == "hybrid_extended":
+            return self._detect_with_hybrid_extended(video_path, **kwargs)
         elif self.method == "auto":
             return self._detect_with_auto_select(video_path, **kwargs)
         else:
@@ -127,6 +136,97 @@ class DetectionOrchestrator:
             f"Hybrid detection found {len(merged)} scenes in {elapsed:.2f}s "
             f"({len(scene_detect_scenes)} from PySceneDetect, "
             f"{len(transnetv2_scenes)} from TransNetV2)"
+        )
+        return merged
+
+    def _detect_with_silence(
+        self,
+        video_path: Path,
+        **kwargs,
+    ) -> list[SceneBoundary]:
+        """Detect silence segments using audio analysis."""
+        from unrealitytv.detectors.silence_detector import detect_silence
+
+        logger.info(f"Detecting silence in {video_path.name}")
+        start_time = time.time()
+
+        try:
+            silences = detect_silence(video_path, **kwargs)
+            elapsed = time.time() - start_time
+            logger.info(
+                f"Silence detection found {len(silences)} segments in {elapsed:.2f}s"
+            )
+            return silences
+        except Exception as e:
+            logger.error(f"Silence detection failed: {e}")
+            raise
+
+    def _detect_with_credits(
+        self,
+        video_path: Path,
+        **kwargs,
+    ) -> list[SceneBoundary]:
+        """Detect credits sequences using frame analysis."""
+        from unrealitytv.detectors.credits_detector import detect_credits
+
+        logger.info(f"Detecting credits in {video_path.name}")
+        start_time = time.time()
+
+        try:
+            credits = detect_credits(video_path, **kwargs)
+            elapsed = time.time() - start_time
+            logger.info(
+                f"Credits detection found {len(credits)} segments in {elapsed:.2f}s"
+            )
+            return credits
+        except Exception as e:
+            logger.error(f"Credits detection failed: {e}")
+            raise
+
+    def _detect_with_hybrid_extended(
+        self,
+        video_path: Path,
+        **kwargs,
+    ) -> list[SceneBoundary]:
+        """Run all available detection methods and merge results."""
+        logger.info(f"Detecting scenes with hybrid_extended method for {video_path.name}")
+        start_time = time.time()
+
+        results: list[SceneBoundary] = []
+
+        # Run PySceneDetect
+        scene_detect_scenes = self._detect_with_scene_detect(video_path, **kwargs)
+        results.extend(scene_detect_scenes)
+
+        # Try TransNetV2
+        try:
+            transnetv2_scenes = self._detect_with_transnetv2(video_path, **kwargs)
+            results.extend(transnetv2_scenes)
+        except RuntimeError as e:
+            logger.warning(f"TransNetV2 detection skipped: {e}")
+
+        # Try Silence detection
+        try:
+            silence_scenes = self._detect_with_silence(video_path, **kwargs)
+            results.extend(silence_scenes)
+        except Exception as e:
+            logger.warning(f"Silence detection skipped: {e}")
+
+        # Try Credits detection
+        try:
+            credits_scenes = self._detect_with_credits(video_path, **kwargs)
+            results.extend(credits_scenes)
+        except Exception as e:
+            logger.warning(f"Credits detection skipped: {e}")
+
+        # Merge all results
+        merged = self._merge_scene_lists(
+            results, []
+        ) if results else []
+        elapsed = time.time() - start_time
+        logger.info(
+            f"Hybrid extended detection found {len(merged)} combined segments "
+            f"in {elapsed:.2f}s"
         )
         return merged
 
