@@ -44,6 +44,34 @@ class Settings(BaseSettings):
         description="Enable batch processing multiple episodes"
     )
 
+    # Phase 6: Performance optimization and caching
+    enable_caching: bool = Field(
+        default=True,
+        description="Enable result caching for transcription, analysis, and detection"
+    )
+    cache_dir: Path | None = Field(
+        default=None,
+        description="Cache directory (default: ~/.cache/unrealitytv)"
+    )
+    enable_metrics: bool = Field(
+        default=False,
+        description="Enable performance metrics collection"
+    )
+    metrics_file: Path | None = Field(
+        default=None,
+        description="File to persist performance metrics (JSON Lines format)"
+    )
+    enable_parallel_processing: bool = Field(
+        default=False,
+        description="Enable parallel processing of episodes"
+    )
+    max_workers: int = Field(
+        default=4,
+        ge=1,
+        le=32,
+        description="Maximum number of worker threads for parallel processing"
+    )
+
     model_config = {
         "env_file": ".env",
         "env_file_encoding": "utf-8",
