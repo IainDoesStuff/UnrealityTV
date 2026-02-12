@@ -204,14 +204,8 @@ class TestSceneDetection:
 
     def test_detect_scenes_import_error(self, mock_video_path: Path) -> None:
         """Test handling of missing scenedetect library."""
-        with patch.dict(
-            "sys.modules",
-            {
-                "scenedetect": None,
-                "scenedetect.detectors": None,
-                "scenedetect.scene_manager": None,
-                "scenedetect.video_manager": None,
-            },
+        with patch(
+            "unrealitytv.detectors.scene_detector.AdaptiveDetector", None
         ):
             with pytest.raises(RuntimeError, match="scenedetect library is not installed"):
                 detect_scenes(mock_video_path)
