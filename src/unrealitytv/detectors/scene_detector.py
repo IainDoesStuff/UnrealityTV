@@ -51,7 +51,7 @@ def detect_scenes(
         scene_manager = SceneManager()
 
         # Add AdaptiveDetector with the given threshold
-        scene_manager.add_detector(AdaptiveDetector(threshold=threshold))
+        scene_manager.add_detector(AdaptiveDetector(adaptive_threshold=threshold))
 
         # Process the video
         base_timecode = video_manager.get_base_timecode()
