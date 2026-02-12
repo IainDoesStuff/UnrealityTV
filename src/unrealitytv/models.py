@@ -7,6 +7,14 @@ from typing import Literal, Optional
 from pydantic import BaseModel, Field, field_validator
 
 
+class PlexMetadata(BaseModel):
+    """Plex metadata for an episode."""
+
+    plex_item_id: str
+    plex_library_key: str
+    plex_section_key: str
+
+
 class Episode(BaseModel):
     """Represents a single episode."""
 
@@ -15,6 +23,7 @@ class Episode(BaseModel):
     season: Optional[int] = None
     episode: Optional[int] = None
     duration_ms: Optional[int] = None
+    plex_metadata: Optional[PlexMetadata] = None
 
     model_config = {"json_encoders": {Path: str}}
 
