@@ -70,7 +70,7 @@ class TestDatabase:
         # Query back
         cursor.execute("SELECT show_name, season, episode FROM episodes")
         row = cursor.fetchone()
-        assert row == ("Test Show", 1, 5)
+        assert tuple(row) == ("Test Show", 1, 5)
 
     def test_can_insert_into_skip_segments(self, tmp_db):
         """Test inserting into skip_segments table."""
@@ -106,7 +106,7 @@ class TestDatabase:
             (episode_id,),
         )
         row = cursor.fetchone()
-        assert row == ("recap", 0.95, "Previously on...")
+        assert tuple(row) == ("recap", 0.95, "Previously on...")
 
     def test_can_insert_into_frame_hashes(self, tmp_db):
         """Test inserting into frame_hashes table."""
@@ -142,7 +142,7 @@ class TestDatabase:
             (episode_id,),
         )
         row = cursor.fetchone()
-        assert row == ("abc123def456",)
+        assert tuple(row) == ("abc123def456",)
 
     def test_connection_property_lazy_loads(self, tmp_db):
         """Test that connection property creates connection on first access."""
