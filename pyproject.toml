@@ -27,9 +27,6 @@ dev = [
     "pytest",
     "ruff",
     "scenedetect",
-    "transnetv2",
-    "torch",
-    "opencv-python",
 ]
 scene-detection = [
     "scenedetect[opencv]",
