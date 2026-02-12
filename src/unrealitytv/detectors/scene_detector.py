@@ -4,6 +4,10 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from unrealitytv.models import SceneBoundary
 
 try:
     from scenedetect import AdaptiveDetector, SceneManager, VideoManager
@@ -12,8 +16,6 @@ except ImportError:
     AdaptiveDetector = None  # type: ignore
     SceneManager = None  # type: ignore
     VideoManager = None  # type: ignore
-
-from unrealitytv.models import SceneBoundary
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +44,8 @@ def detect_scenes(
         raise RuntimeError(msg)
 
     try:
+        from unrealitytv.models import SceneBoundary
+
         # Initialize video manager and scene manager
         video_manager = VideoManager([str(video_path)])
         scene_manager = SceneManager()
