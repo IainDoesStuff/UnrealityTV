@@ -26,6 +26,13 @@ classifiers = [
 dev = [
     "pytest",
     "ruff",
+    "scenedetect[opencv]",
+]
+scene-detection = [
+    "scenedetect[opencv]",
+]
+gpu = [
+    "transnetv2",
 ]
 
 [project.scripts]
