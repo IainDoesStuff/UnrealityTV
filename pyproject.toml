@@ -14,6 +14,7 @@ dependencies = [
     "click",
     "pydantic",
     "pydantic-settings",
+    "scenedetect[opencv]",
 ]
 keywords = ["plex", "scene detection", "skip segments"]
 classifiers = [
