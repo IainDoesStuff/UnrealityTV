@@ -6,8 +6,8 @@ import logging
 import re
 from dataclasses import dataclass, field
 
-from src.unrealitytv.models import SkipSegment
-from src.unrealitytv.transcription.whisper import TranscriptSegment
+from unrealitytv.models import SkipSegment
+from unrealitytv.transcription.whisper import TranscriptSegment
 
 logger = logging.getLogger(__name__)
 

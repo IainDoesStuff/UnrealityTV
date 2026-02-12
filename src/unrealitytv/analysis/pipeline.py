@@ -8,10 +8,10 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Optional
 
-from src.unrealitytv.audio.extract import extract_audio, get_duration_ms
-from src.unrealitytv.detection.patterns import KeywordMatcher, PatternDetectionError
-from src.unrealitytv.models import AnalysisResult, Episode, SkipSegment
-from src.unrealitytv.transcription.whisper import (
+from unrealitytv.audio.extract import extract_audio, get_duration_ms
+from unrealitytv.detection.patterns import KeywordMatcher, PatternDetectionError
+from unrealitytv.models import AnalysisResult, Episode, SkipSegment
+from unrealitytv.transcription.whisper import (
     TranscriptSegment,
     WhisperError,
     WhisperTranscriber,
