@@ -8,9 +8,9 @@ from unittest.mock import MagicMock, patch
 import pytest
 from click.testing import CliRunner
 
-from src.unrealitytv.analysis import AnalysisPipelineError
-from src.unrealitytv.cli import analyze
-from src.unrealitytv.models import AnalysisResult, Episode, SkipSegment
+from unrealitytv.analysis import AnalysisPipelineError
+from unrealitytv.cli import analyze
+from unrealitytv.models import AnalysisResult, Episode, SkipSegment
 
 
 @pytest.fixture

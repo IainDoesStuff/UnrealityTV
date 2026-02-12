@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
-from src.unrealitytv.analysis.pipeline import AnalysisPipeline, AnalysisPipelineError
-from src.unrealitytv.models import AnalysisResult, Episode, SkipSegment
-from src.unrealitytv.transcription.whisper import TranscriptSegment
+from unrealitytv.analysis.pipeline import AnalysisPipeline, AnalysisPipelineError
+from unrealitytv.models import AnalysisResult, Episode, SkipSegment
+from unrealitytv.transcription.whisper import TranscriptSegment
 
 
 @pytest.fixture
@@ -104,9 +104,9 @@ class TestAnalysisPipelineErrorHandling:
     ) -> None:
         """Test analyze with fully mocked components."""
         # Mock all the components to avoid FFmpeg/Whisper/etc
-        with patch("src.unrealitytv.analysis.pipeline.AnalysisPipeline._extract_audio") as mock_extract, \
-             patch("src.unrealitytv.analysis.pipeline.AnalysisPipeline._transcribe_audio") as mock_transcribe, \
-             patch("src.unrealitytv.analysis.pipeline.AnalysisPipeline._detect_segments") as mock_detect:
+        with patch("unrealitytv.analysis.pipeline.AnalysisPipeline._extract_audio"), \
+             patch("unrealitytv.analysis.pipeline.AnalysisPipeline._transcribe_audio") as mock_transcribe, \
+             patch("unrealitytv.analysis.pipeline.AnalysisPipeline._detect_segments") as mock_detect:
 
             mock_transcribe.return_value = []
             mock_detect.return_value = []
