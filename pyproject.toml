@@ -28,9 +28,15 @@ dev = [
     "pytest",
     "ruff",
     "scenedetect",
+    "librosa",
+    "opencv-python",
 ]
 scene-detection = [
     "scenedetect[opencv]",
+]
+audio = [
+    "librosa",
+    "numpy",
 ]
 gpu = [
     "transnetv2",
@@ -38,6 +44,10 @@ gpu = [
 ]
 plex = [
     "plexapi",
+]
+credits = [
+    "opencv-python",
+    "numpy",
 ]
 
 [project.scripts]

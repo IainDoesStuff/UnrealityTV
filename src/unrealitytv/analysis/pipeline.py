@@ -210,14 +210,13 @@ class AnalysisPipeline:
         """
         try:
             if self._matcher is None:
-                self._matcher = KeywordMatcher(
-                    recap_keywords=self.recap_keywords
-                    if self.recap_keywords
-                    else [],
-                    preview_keywords=self.preview_keywords
-                    if self.preview_keywords
-                    else [],
-                )
+                # Use provided keywords or let KeywordMatcher use its defaults
+                kwargs = {}
+                if self.recap_keywords:
+                    kwargs["recap_keywords"] = self.recap_keywords
+                if self.preview_keywords:
+                    kwargs["preview_keywords"] = self.preview_keywords
+                self._matcher = KeywordMatcher(**kwargs)
 
             logger.debug(f"Detecting segments from {len(transcript)} transcript items")
             segments = self._matcher.detect_segments(transcript)
