@@ -30,6 +30,8 @@ dev = [
     "scenedetect",
     "librosa",
     "opencv-python",
+    "imagehash",
+    "Pillow",
 ]
 scene-detection = [
     "scenedetect[opencv]",
@@ -48,6 +50,10 @@ plex = [
 credits = [
     "opencv-python",
     "numpy",
+]
+visual = [
+    "imagehash",
+    "Pillow",
 ]
 
 [project.scripts]

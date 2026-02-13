@@ -50,3 +50,4 @@ unrealitytv.db
 # Temp files
 *.tmp
 .temp/
+test_data/

@@ -125,7 +125,7 @@ class TestSceneDetection:
             detect_scenes(mock_video_path, threshold=5.0)
 
             # Verify AdaptiveDetector was called with correct threshold
-            mock_detector_class.assert_called_once_with(threshold=5.0)
+            mock_detector_class.assert_called_once_with(adaptive_threshold=5.0)
 
     def test_detect_scenes_empty_video(self, mock_video_path: Path) -> None:
         """Test handling of video with no scenes detected."""
