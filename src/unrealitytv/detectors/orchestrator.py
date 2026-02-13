@@ -26,6 +26,7 @@ class DetectionOrchestrator:
                 - "hybrid": Run both methods and merge results
                 - "silence": Silence detection using audio analysis
                 - "credits": Credits detection using frame analysis
+                - "visual_duplicates": Visual duplicate detection (returns SkipSegment)
                 - "hybrid_extended": Run all available methods and merge results
                 - "auto": Choose based on hardware availability (default)
         """
@@ -43,7 +44,8 @@ class DetectionOrchestrator:
             **kwargs: Additional arguments passed to detection methods
 
         Returns:
-            List of detected scenes as SceneBoundary objects
+            List of detected scenes as SceneBoundary objects.
+            Note: "visual_duplicates" method returns SkipSegment list instead.
         """
         if self.method == "scene_detect":
             return self._detect_with_scene_detect(video_path, **kwargs)
@@ -55,6 +57,8 @@ class DetectionOrchestrator:
             return self._detect_with_silence(video_path, **kwargs)
         elif self.method == "credits":
             return self._detect_with_credits(video_path, **kwargs)
+        elif self.method == "visual_duplicates":
+            return self._detect_with_visual_duplicates(video_path, **kwargs)
         elif self.method == "hybrid_extended":
             return self._detect_with_hybrid_extended(video_path, **kwargs)
         elif self.method == "auto":
@@ -247,6 +251,48 @@ class DetectionOrchestrator:
 
         logger.info("No GPU available, using PySceneDetect")
         return self._detect_with_scene_detect(video_path, **kwargs)
+
+    def _detect_with_visual_duplicates(
+        self,
+        video_path: Path,
+        **kwargs,
+    ) -> list:
+        """Detect visually duplicate frames across episodes.
+
+        This method returns SkipSegment objects (not SceneBoundary),
+        as visual duplicates are identified flashback segments ready to skip.
+
+        Args:
+            video_path: Path to the video file
+            **kwargs: Additional arguments passed to detect_visual_duplicates
+                      (db, episode_id, fps, hamming_threshold, etc.)
+
+        Returns:
+            List of SkipSegment objects representing detected flashbacks
+        """
+        try:
+            from unrealitytv.detectors.visual_duplicate_detector import (
+                detect_visual_duplicates,
+            )
+
+            logger.info(
+                f"Detecting visual duplicates for {video_path.name}"
+            )
+            start_time = time.time()
+
+            segments = detect_visual_duplicates(video_path, **kwargs)
+            elapsed = time.time() - start_time
+            logger.info(
+                f"Visual duplicate detection found {len(segments)} segments in {elapsed:.2f}s"
+            )
+            return segments
+        except ImportError as e:
+            msg = "Visual duplicate detection requires imagehash and Pillow: pip install imagehash Pillow"
+            logger.error(msg)
+            raise RuntimeError(msg) from e
+        except Exception as e:
+            logger.error(f"Visual duplicate detection failed: {e}")
+            raise
 
     @staticmethod
     def _merge_scene_lists(

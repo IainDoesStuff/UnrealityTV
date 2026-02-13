@@ -106,6 +106,34 @@ class Settings(BaseSettings):
         description="Allow combining multiple detection methods in results"
     )
 
+    # Phase 8: Visual duplicate detection
+    visual_duplicate_detection_enabled: bool = Field(
+        default=False,
+        description="Enable visual duplicate frame detection across episodes"
+    )
+    visual_duplicate_fps: float = Field(
+        default=1.0,
+        ge=0.1,
+        le=10.0,
+        description="Frames per second for visual duplicate extraction (0.1-10.0)"
+    )
+    visual_duplicate_hamming_threshold: int = Field(
+        default=8,
+        ge=0,
+        le=64,
+        description="Hamming distance threshold for visual duplicate matching (0-64)"
+    )
+    visual_duplicate_min_duration_ms: int = Field(
+        default=3000,
+        ge=0,
+        description="Minimum duration for visual duplicate segments in milliseconds"
+    )
+    visual_duplicate_gap_tolerance_ms: int = Field(
+        default=2000,
+        ge=0,
+        description="Maximum gap between consecutive visual duplicate matches in milliseconds"
+    )
+
     model_config = {
         "env_file": ".env",
         "env_file_encoding": "utf-8",
@@ -122,6 +150,7 @@ class Settings(BaseSettings):
             "hybrid",
             "silence",
             "credits",
+            "visual_duplicates",
             "hybrid_extended",
             "auto",
         ]

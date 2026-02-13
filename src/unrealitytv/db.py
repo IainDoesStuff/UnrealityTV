@@ -439,3 +439,144 @@ class SkipSegmentRepository:
         except Exception as e:
             msg = f"Failed to delete segments by episode: {e}"
             raise RepositoryError(msg) from e
+
+
+class FrameHashRepository:
+    """Repository for managing frame hashes in the database."""
+
+    def __init__(self, db: Database) -> None:
+        """Initialize frame hash repository.
+
+        Args:
+            db: Database instance for connection management.
+        """
+        self.db = db
+
+    def add_hashes_batch(self, episode_id: int, hashes: list[tuple[int, str]]) -> int:
+        """Bulk insert frame hashes for an episode.
+
+        Args:
+            episode_id: ID of the episode
+            hashes: List of (timestamp_ms, phash) tuples
+
+        Returns:
+            Count of inserted rows
+
+        Raises:
+            RepositoryError: If insertion fails
+        """
+        try:
+            cursor = self.db.connection.cursor()
+            data = [(episode_id, timestamp_ms, phash) for timestamp_ms, phash in hashes]
+            cursor.executemany(
+                "INSERT INTO frame_hashes (episode_id, timestamp_ms, phash) VALUES (?, ?, ?)",
+                data,
+            )
+            self.db.connection.commit()
+            return cursor.rowcount
+        except Exception as e:
+            msg = f"Failed to add frame hashes: {e}"
+            raise RepositoryError(msg) from e
+
+    def get_hashes_by_episode(self, episode_id: int) -> list[dict]:
+        """Get all frame hashes for an episode.
+
+        Args:
+            episode_id: ID of the episode
+
+        Returns:
+            List of frame hash dictionaries ordered by timestamp_ms
+
+        Raises:
+            RepositoryError: If query fails
+        """
+        try:
+            cursor = self.db.connection.cursor()
+            cursor.execute(
+                "SELECT id, episode_id, timestamp_ms, phash FROM frame_hashes WHERE episode_id = ? ORDER BY timestamp_ms ASC",
+                (episode_id,),
+            )
+            return [dict(row) for row in cursor.fetchall()]
+        except Exception as e:
+            msg = f"Failed to get hashes by episode: {e}"
+            raise RepositoryError(msg) from e
+
+    def find_similar_hashes(
+        self, phash: str, exclude_episode_id: int | None = None
+    ) -> list[dict]:
+        """Find frame hashes matching a perceptual hash.
+
+        Args:
+            phash: Perceptual hash string to match
+            exclude_episode_id: Optional episode ID to exclude from results
+
+        Returns:
+            List of matching frame hash dictionaries
+
+        Raises:
+            RepositoryError: If query fails
+        """
+        try:
+            cursor = self.db.connection.cursor()
+            if exclude_episode_id is not None:
+                cursor.execute(
+                    "SELECT id, episode_id, timestamp_ms, phash FROM frame_hashes WHERE phash = ? AND episode_id != ?",
+                    (phash, exclude_episode_id),
+                )
+            else:
+                cursor.execute(
+                    "SELECT id, episode_id, timestamp_ms, phash FROM frame_hashes WHERE phash = ?",
+                    (phash,),
+                )
+            return [dict(row) for row in cursor.fetchall()]
+        except Exception as e:
+            msg = f"Failed to find similar hashes: {e}"
+            raise RepositoryError(msg) from e
+
+    def delete_hashes_by_episode(self, episode_id: int) -> int:
+        """Delete all frame hashes for an episode.
+
+        Args:
+            episode_id: ID of the episode
+
+        Returns:
+            Count of deleted rows
+
+        Raises:
+            RepositoryError: If deletion fails
+        """
+        try:
+            cursor = self.db.connection.cursor()
+            cursor.execute("DELETE FROM frame_hashes WHERE episode_id = ?", (episode_id,))
+            self.db.connection.commit()
+            return cursor.rowcount
+        except Exception as e:
+            msg = f"Failed to delete hashes by episode: {e}"
+            raise RepositoryError(msg) from e
+
+    def get_hash_count(self, episode_id: int | None = None) -> int:
+        """Count frame hashes.
+
+        Args:
+            episode_id: Optional episode ID to count hashes for specific episode
+
+        Returns:
+            Count of frame hashes
+
+        Raises:
+            RepositoryError: If query fails
+        """
+        try:
+            cursor = self.db.connection.cursor()
+            if episode_id is not None:
+                cursor.execute(
+                    "SELECT COUNT(*) FROM frame_hashes WHERE episode_id = ?",
+                    (episode_id,),
+                )
+            else:
+                cursor.execute("SELECT COUNT(*) FROM frame_hashes")
+            row = cursor.fetchone()
+            return row[0] if row else 0
+        except Exception as e:
+            msg = f"Failed to get hash count: {e}"
+            raise RepositoryError(msg) from e
