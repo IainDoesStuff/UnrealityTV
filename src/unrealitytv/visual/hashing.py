@@ -35,11 +35,8 @@ def compute_phash(frame_path: Path) -> str:
     try:
         with Image.open(frame_path) as img:
             hash_object = imagehash.phash(img)
-            # Convert hash to 16-char hex string
-            # hash_object.hash is a numpy array, convert to binary string
-            hash_bits = str(hash_object).replace(" ", "")
-            hash_int = int(hash_bits, 2)
-            return format(hash_int, "016x")
+            # str(hash_object) returns 16-char hex string of the 64-bit pHash
+            return str(hash_object)
     except (IOError, ValueError) as e:
         msg = f"Failed to compute pHash for {frame_path}: {e}"
         logger.error(msg)
