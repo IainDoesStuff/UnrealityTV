@@ -19,7 +19,7 @@ class TestComputePhash:
         """Test that compute_phash returns 16-character hex string."""
         mock_image = MagicMock()
         mock_hash = MagicMock()
-        mock_hash.__str__ = MagicMock(return_value="1010101010101010")
+        mock_hash.__str__ = MagicMock(return_value="abcdef0123456789")
 
         mock_open.return_value.__enter__.return_value = mock_image
         mock_phash.return_value = mock_hash
@@ -54,7 +54,7 @@ class TestComputePhash:
         """Test that identical images produce identical hashes."""
         mock_image = MagicMock()
         mock_hash = MagicMock()
-        mock_hash.__str__ = MagicMock(return_value="1010101010101010")
+        mock_hash.__str__ = MagicMock(return_value="abcdef0123456789")
 
         mock_open.return_value.__enter__.return_value = mock_image
         mock_phash.return_value = mock_hash
